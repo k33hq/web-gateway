@@ -1,0 +1,40 @@
+name: Deploy to GCP
+on:
+  workflow_dispatch:
+env:
+  IMAGE: eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/nginx:1.21.4-alpine
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@v2
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+      - name: Push image to gcr
+        run: |-
+          docker build -t "$IMAGE" config
+          docker push "$IMAGE"
+      - name: Deploy to GCP Cloud Run
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |-
+          gcloud run deploy arcane-web-proxy \
+            --region europe-west1 \
+            --image "$IMAGE" \
+            --cpu=1 \
+            --memory=512Mi \
+            --min-instances=1 \
+            --max-instances=1 \
+            --concurrency=1000 \
+            --set-env-vars=BACKEND_ADDRESS="$GCP_PROJECT_ID".web.app,SERVER_DOMAIN_NAME=arcane.no,NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
+            --service-account arcane-web-proxy@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
+            --allow-unauthenticated \
+            --port=8080 \
+            --platform=managed
