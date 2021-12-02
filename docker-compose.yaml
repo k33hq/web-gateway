@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
   nginx:
@@ -9,6 +9,8 @@ services:
       - PRERENDER_TOKEN=$PRERENDER_TOKEN
       # Backend address where the request should be forwarded by proxy for non-robot request
       - BACKEND_ADDRESS=$BACKEND_ADDRESS
+      # Backend address where the request should be forwarded for /research path
+      - RESEARCH_UI_ADDRESS=$RESEARCH_UI_ADDRESS
       # host name sent to prerender server for robot requests
       - SERVER_DOMAIN_NAME=$SERVER_DOMAIN_NAME
       # output directory where config files generated from template is exported
