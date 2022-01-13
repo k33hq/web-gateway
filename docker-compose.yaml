@@ -3,16 +3,14 @@ version: '3.8'
 services:
   nginx:
     container_name: nginx
-    image: nginx:1.21.4-alpine
+    image: nginx:1.21.5-alpine
     environment:
-      # Token set in header of the request sent to prerender server endpoint
-      - PRERENDER_TOKEN=$PRERENDER_TOKEN
+      # domain name
+      - SERVER_DOMAIN_NAME=$SERVER_DOMAIN_NAME
       # Backend address where the request should be forwarded by proxy for non-robot request
       - BACKEND_ADDRESS=$BACKEND_ADDRESS
       # Backend address where the request should be forwarded for /research path
       - RESEARCH_UI_ADDRESS=$RESEARCH_UI_ADDRESS
-      # host name sent to prerender server for robot requests
-      - SERVER_DOMAIN_NAME=$SERVER_DOMAIN_NAME
       # output directory where config files generated from template is exported
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/
     ports:

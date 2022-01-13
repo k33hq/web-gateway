@@ -15,7 +15,7 @@ if [ -f .env ]; then
   set +o allexport
 fi
 
-IMAGE=eu.gcr.io/"$GCP_PROJECT_ID"/nginx:1.21.4-alpine
+IMAGE=eu.gcr.io/"$GCP_PROJECT_ID"/nginx:1.21.5-alpine
 
 # RESEARCH_UI_URL=$(gcloud run services describe research-ui --format=json | jq -r '.status.address.url')
 # RESEARCH_UI_ADDRESS=${RESEARCH_UI_URL#"https://"}
@@ -35,7 +35,7 @@ gcloud run deploy arcane-web-proxy \
   --min-instances=1 \
   --max-instances=1 \
   --concurrency=1000 \
-  --set-env-vars=BACKEND_ADDRESS="$GCP_PROJECT_ID".web.app,RESEARCH_UI_ADDRESS="$RESEARCH_UI_ADDRESS",SERVER_DOMAIN_NAME=arcane.no,NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
+  --set-env-vars=BACKEND_ADDRESS="$BACKEND_ADDRESS",RESEARCH_UI_ADDRESS="$RESEARCH_UI_ADDRESS",SERVER_DOMAIN_NAME="$SERVER_DOMAIN_NAME",NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
   --service-account arcane-web-proxy@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
   --allow-unauthenticated \
   --port=8080 \

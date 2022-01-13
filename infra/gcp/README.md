@@ -37,10 +37,3 @@ gcloud iam service-accounts create arcane-web-proxy \
     --description="Service Account for arcane-web-proxy cloud run service" \
     --display-name="arcane-web-proxy"
 ```
-
-Assign role to service account so that it can access GCP Secret manager.
-```shell
-gcloud projects add-iam-policy-binding "$GCP_PROJECT_ID" \
-  --member serviceAccount:arcane-web-proxy@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
-  --role roles/secretmanager.secretAccessor
-```
