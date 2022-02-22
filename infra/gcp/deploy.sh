@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 
 #
 #  Script to deploy arcane-web-proxy to GCP cloud run.
@@ -15,15 +15,15 @@ if [ -f .env ]; then
   set +o allexport
 fi
 
-IMAGE=eu.gcr.io/"$GCP_PROJECT_ID"/nginx:1.21.5-alpine
+IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/nginx:1.21.6-alpine
 
 # RESEARCH_UI_URL=$(gcloud run services describe research-ui --format=json | jq -r '.status.address.url')
 # RESEARCH_UI_ADDRESS=${RESEARCH_UI_URL#"https://"}
 
 echo Pushing docker image
 
-docker build -t "$IMAGE" config
-docker push "$IMAGE"
+docker image build -t "$IMAGE" --platform linux/amd64 config
+docker image push "$IMAGE"
 
 echo Deploying to GCP cloud run
 

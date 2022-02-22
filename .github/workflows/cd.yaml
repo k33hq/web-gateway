@@ -2,7 +2,7 @@ name: Deploy to GCP
 on:
   workflow_dispatch:
 env:
-  IMAGE: eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/nginx:1.21.5-alpine
+  IMAGE: europe-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/web/nginx:1.21.6-alpine
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
@@ -16,11 +16,11 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - name: Authorize Docker push
-        run: gcloud auth configure-docker
-      - name: Push image to gcr
+        run: gcloud auth configure-docker europe-docker.pkg.dev
+      - name: Push image to gcp artifact registry
         run: |-
-          docker build -t "$IMAGE" config
-          docker push "$IMAGE"
+          docker image build -t "$IMAGE" config
+          docker image push "$IMAGE"
       - name: Deploy to GCP Cloud Run
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
