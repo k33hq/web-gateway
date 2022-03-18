@@ -7,7 +7,7 @@ services:
     environment:
       # domain name
       - SERVER_DOMAIN_NAME=$SERVER_DOMAIN_NAME
-      # Backend address where the request should be forwarded by proxy for non-robot request
+      # Backend address where the request should be forwarded by proxy by default
       - BACKEND_ADDRESS=$BACKEND_ADDRESS
       # Backend address where the request should be forwarded for /research path
       - RESEARCH_UI_ADDRESS=$RESEARCH_UI_ADDRESS

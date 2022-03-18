@@ -3,7 +3,7 @@
 This is configuration for nginx reverse proxy.
 
 ## Local Setup
- * Create `.env` file using `example.env` as template.
+ * Create `.env` file using `.env.template` as template.
  * Run `nginx` locally using `docker-compose`.
 
 ```shell
