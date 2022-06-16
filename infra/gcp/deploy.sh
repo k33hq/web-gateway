@@ -35,7 +35,7 @@ gcloud run deploy arcane-web-proxy \
   --min-instances=1 \
   --max-instances=1 \
   --concurrency=1000 \
-  --set-env-vars=BACKEND_ADDRESS="$BACKEND_ADDRESS",RESEARCH_UI_ADDRESS="$RESEARCH_UI_ADDRESS",SERVER_DOMAIN_NAME="$SERVER_DOMAIN_NAME",NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
+  --set-env-vars=BACKEND_ADDRESS="$BACKEND_ADDRESS",RESEARCH_UI_ADDRESS="$RESEARCH_UI_ADDRESS",INVEST_APP_ADDRESS="$INVEST_APP_ADDRESS",SERVER_DOMAIN_NAME="$SERVER_DOMAIN_NAME",NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
   --service-account arcane-web-proxy@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
   --allow-unauthenticated \
   --port=8080 \

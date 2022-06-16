@@ -7,7 +7,7 @@ This is configuration for nginx reverse proxy.
  * Run `nginx` locally using `docker-compose`.
 
 ```shell
-source .env && docker compose up --build
+docker compose up --build
 docker compose down
 ```
 
