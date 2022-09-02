@@ -17,7 +17,7 @@ if [ -f .env ]; then
   set +o allexport
 fi
 
-IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/arcane-web-proxy/nginx:1.21.6-alpine
+IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/arcane-web-proxy/nginx:1.23.1-alpine
 
 # RESEARCH_URL=$(gcloud run services describe research-ui --format=json | jq -r '.status.address.url')
 # RESEARCH_HOSTNAME=${RESEARCH_URL#"https://"}
