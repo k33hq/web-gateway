@@ -6,13 +6,13 @@ services:
     build: config
     environment:
       # domain name
-      - SERVER_DOMAIN_NAME=$SERVER_DOMAIN_NAME
+      - WEB_DOMAIN_NAME=$WEB_DOMAIN_NAME
       # Backend address where the request should be forwarded by proxy by default
-      - BACKEND_ADDRESS=$BACKEND_ADDRESS
+      - DEFAULT_HOSTNAME=$DEFAULT_HOSTNAME
       # Backend address where the request should be forwarded for /research path
-      - RESEARCH_UI_ADDRESS=$RESEARCH_UI_ADDRESS
+      - RESEARCH_HOSTNAME=$RESEARCH_HOSTNAME
       # Backend address where the request should be forwarded for /invest path
-      - INVEST_APP_ADDRESS=$INVEST_APP_ADDRESS
+      - INVEST_HOSTNAME=$INVEST_HOSTNAME
       # output directory where config files generated from template is exported
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/
     ports:
