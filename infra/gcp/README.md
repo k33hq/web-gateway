@@ -33,7 +33,19 @@ Your active configuration is: [default]
 
 Create service accounts for both the cloud run services.
 ```shell
-gcloud iam service-accounts create arcane-web-proxy \
-    --description="Service Account for arcane-web-proxy cloud run service" \
-    --display-name="arcane-web-proxy"
+gcloud iam service-accounts create k33-web-gateway \
+    --description="Service Account for k33-web-gateway cloud run service" \
+    --display-name="k33-web-gateway"
+```
+
+Deploy `k33-web-gateway` to GCP Cloud Run
+
+```shell
+./infra/gcp/deploy.sh
+```
+
+Assign domain name to gateway
+
+```shell
+gcloud beta run domain-mappings create --service k33-web-gateway --domain "${WEB_DOMAIN_NAME}"
 ```

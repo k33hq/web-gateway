@@ -49,5 +49,6 @@ jobs:
             --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
             --service-account arcane-web-proxy@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
             --allow-unauthenticated \
+            --ingress=internal-and-cloud-load-balancing \
             --port=8080 \
             --platform=managed

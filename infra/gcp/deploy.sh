@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-#  Script to deploy arcane-web-proxy to GCP cloud run.
+#  Script to deploy k33-web-gateway to GCP cloud run.
 #
 
 set -e
@@ -17,10 +17,7 @@ if [ -f .env ]; then
   set +o allexport
 fi
 
-IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/arcane-web-proxy/nginx:1.23.1-alpine
-
-# RESEARCH_URL=$(gcloud run services describe research-ui --format=json | jq -r '.status.address.url')
-# RESEARCH_HOSTNAME=${RESEARCH_URL#"https://"}
+IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/k33-web-gateway/nginx:1.23.1-alpine
 
 echo Pushing docker image
 
@@ -29,7 +26,7 @@ docker image push "$IMAGE"
 
 echo Deploying to GCP cloud run
 
-gcloud run deploy arcane-web-proxy \
+gcloud run deploy k33-web-gateway \
   --region europe-west1 \
   --image "$IMAGE" \
   --cpu=1 \
@@ -40,9 +37,11 @@ gcloud run deploy arcane-web-proxy \
   --set-env-vars=DEFAULT_HOSTNAME="$DEFAULT_HOSTNAME" \
   --set-env-vars=RESEARCH_HOSTNAME="$RESEARCH_HOSTNAME" \
   --set-env-vars=INVEST_HOSTNAME="$INVEST_HOSTNAME" \
+  --set-env-vars=MARKETS_HOSTNAME="$MARKETS_HOSTNAME" \
   --set-env-vars=WEB_DOMAIN_NAME="$WEB_DOMAIN_NAME" \
   --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
-  --service-account arcane-web-proxy@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
+  --service-account k33-web-gateway@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
   --allow-unauthenticated \
+  --ingress=internal-and-cloud-load-balancing \
   --port=8080 \
   --platform=managed
