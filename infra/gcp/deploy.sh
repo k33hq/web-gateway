@@ -17,7 +17,7 @@ if [ -f .env ]; then
   set +o allexport
 fi
 
-IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/k33-web-gateway/nginx:1.23.1-alpine
+IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/k33-web-gateway/nginx:1.24.0-alpine
 
 echo Pushing docker image
 
