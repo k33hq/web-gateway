@@ -11,10 +11,8 @@ services:
       - DEFAULT_HOSTNAME=$DEFAULT_HOSTNAME
       # Backend address where the request should be forwarded for /research path
       - RESEARCH_HOSTNAME=$RESEARCH_HOSTNAME
-      # Backend address where the request should be forwarded for /invest path
+      # Backend address where the request should be forwarded for /apps/invest path
       - INVEST_HOSTNAME=$INVEST_HOSTNAME
-      # Backend address where the request should be forwarded for /markets path
-      - MARKETS_HOSTNAME=$MARKETS_HOSTNAME
       # Backend address where the request should be forwarded for /services/auth path
       - AUTH_HOSTNAME=$AUTH_HOSTNAME
       # output directory where config files generated from template is exported
