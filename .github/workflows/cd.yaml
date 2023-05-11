@@ -33,6 +33,7 @@ jobs:
           DEFAULT_HOSTNAME: ${{ secrets.DEFAULT_HOSTNAME }}
           RESEARCH_HOSTNAME: ${{ secrets.RESEARCH_HOSTNAME }}
           INVEST_HOSTNAME: ${{ secrets.INVEST_HOSTNAME }}
+          AUTH_HOSTNAME: ${{ secrets.AUTH_HOSTNAME }}
         run: |-
           gcloud run deploy arcane-web-proxy \
             --region europe-west1 \
@@ -45,6 +46,7 @@ jobs:
             --set-env-vars=DEFAULT_HOSTNAME="$DEFAULT_HOSTNAME" \
             --set-env-vars=RESEARCH_HOSTNAME="$RESEARCH_HOSTNAME" \
             --set-env-vars=INVEST_HOSTNAME="$INVEST_HOSTNAME" \
+            --set-env-vars=AUTH_HOSTNAME="$AUTH_HOSTNAME" \
             --set-env-vars=WEB_DOMAIN_NAME=arcane.no \
             --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
             --service-account arcane-web-proxy@"$GCP_PROJECT_ID".iam.gserviceaccount.com \

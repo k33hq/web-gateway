@@ -15,6 +15,8 @@ services:
       - INVEST_HOSTNAME=$INVEST_HOSTNAME
       # Backend address where the request should be forwarded for /markets path
       - MARKETS_HOSTNAME=$MARKETS_HOSTNAME
+      # Backend address where the request should be forwarded for /services/auth path
+      - AUTH_HOSTNAME=$AUTH_HOSTNAME
       # output directory where config files generated from template is exported
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/
     ports:
