@@ -11,6 +11,8 @@ services:
       - DEFAULT_HOSTNAME=$DEFAULT_HOSTNAME
       # Backend address where the request should be forwarded for /research path
       - RESEARCH_HOSTNAME=$RESEARCH_HOSTNAME
+      # Backend address where the request should be forwarded for /research/archive path
+      - RESEARCH_ARCHIVE_HOSTNAME=$RESEARCH_ARCHIVE_HOSTNAME
       # Backend address where the request should be forwarded for /apps/invest path
       - INVEST_HOSTNAME=$INVEST_HOSTNAME
       # Backend address where the request should be forwarded for /services/auth path

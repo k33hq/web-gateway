@@ -1,6 +1,6 @@
-# nginx-reverse-proxy
+# web-gateway
 
-This is configuration for nginx reverse proxy.
+Nginx reverse-proxy for web traffic.
 
 ## Local Setup
  * Create `.env` file using `.env.template` as template.
