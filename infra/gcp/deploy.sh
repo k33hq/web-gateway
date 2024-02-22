@@ -38,6 +38,7 @@ gcloud run deploy k33-web-gateway \
   --set-env-vars=RESEARCH_HOSTNAME="$RESEARCH_HOSTNAME" \
   --set-env-vars=RESEARCH_ARCHIVE_HOSTNAME="$RESEARCH_ARCHIVE_HOSTNAME" \
   --set-env-vars=INVEST_HOSTNAME="$INVEST_HOSTNAME" \
+  --set-env-vars=VAULT_HOSTNAME="$VAULT_HOSTNAME" \
   --set-env-vars=AUTH_HOSTNAME="$AUTH_HOSTNAME" \
   --set-env-vars=WEB_DOMAIN_NAME="$WEB_DOMAIN_NAME" \
   --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
