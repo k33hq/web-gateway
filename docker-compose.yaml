@@ -7,18 +7,20 @@ services:
     environment:
       # domain name
       - WEB_DOMAIN_NAME=$WEB_DOMAIN_NAME
-      # Backend address where the request should be forwarded by proxy by default
-      - DEFAULT_HOSTNAME=$DEFAULT_HOSTNAME
-      # Backend address where the request should be forwarded for /research path
-      - RESEARCH_HOSTNAME=$RESEARCH_HOSTNAME
       # Backend address where the request should be forwarded for /research/archive path
       - RESEARCH_ARCHIVE_HOSTNAME=$RESEARCH_ARCHIVE_HOSTNAME
+      # Backend address where the request should be forwarded for /research path
+      - RESEARCH_HOSTNAME=$RESEARCH_HOSTNAME
       # Backend address where the request should be forwarded for /apps/invest path
       - INVEST_HOSTNAME=$INVEST_HOSTNAME
       # Backend address where the request should be forwarded for /apps/vault path
       - VAULT_HOSTNAME=$VAULT_HOSTNAME
       # Backend address where the request should be forwarded for /services/auth path
       - AUTH_HOSTNAME=$AUTH_HOSTNAME
+      # Backend address where the request should be forwarded for sitemap.xml, robots.txt and .well-known
+      - PLATFORM_HOSTNAME=$PLATFORM_HOSTNAME
+      # Backend address where the request should be forwarded by proxy by default
+      - DEFAULT_HOSTNAME=$DEFAULT_HOSTNAME
       # output directory where config files generated from template is exported
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/
     ports:

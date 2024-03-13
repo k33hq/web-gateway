@@ -17,7 +17,7 @@ if [ -f .env ]; then
   set +o allexport
 fi
 
-IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/k33-web-gateway/nginx:1.25.1-alpine
+IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/k33-web-gateway/nginx:1.25.4-alpine
 
 echo Pushing docker image
 
@@ -34,12 +34,13 @@ gcloud run deploy k33-web-gateway \
   --min-instances=1 \
   --max-instances=1 \
   --concurrency=1000 \
-  --set-env-vars=DEFAULT_HOSTNAME="$DEFAULT_HOSTNAME" \
-  --set-env-vars=RESEARCH_HOSTNAME="$RESEARCH_HOSTNAME" \
   --set-env-vars=RESEARCH_ARCHIVE_HOSTNAME="$RESEARCH_ARCHIVE_HOSTNAME" \
+  --set-env-vars=RESEARCH_HOSTNAME="$RESEARCH_HOSTNAME" \
   --set-env-vars=INVEST_HOSTNAME="$INVEST_HOSTNAME" \
   --set-env-vars=VAULT_HOSTNAME="$VAULT_HOSTNAME" \
   --set-env-vars=AUTH_HOSTNAME="$AUTH_HOSTNAME" \
+  --set-env-vars=PLATFORM_HOSTNAME="$PLATFORM_HOSTNAME" \
+  --set-env-vars=DEFAULT_HOSTNAME="$DEFAULT_HOSTNAME" \
   --set-env-vars=WEB_DOMAIN_NAME="$WEB_DOMAIN_NAME" \
   --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
   --service-account k33-web-gateway@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
