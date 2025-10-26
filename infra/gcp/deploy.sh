@@ -17,7 +17,7 @@ if [ -f .env ]; then
   set +o allexport
 fi
 
-IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/k33-web-gateway/nginx:1.25.4-alpine
+IMAGE=europe-docker.pkg.dev/"$GCP_PROJECT_ID"/web/k33-web-gateway/nginx:1.29.2-alpine
 
 echo Pushing docker image
 
@@ -45,6 +45,6 @@ gcloud run deploy k33-web-gateway \
   --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
   --service-account k33-web-gateway@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
   --allow-unauthenticated \
-  --ingress=internal-and-cloud-load-balancing \
+  --ingress="$GCP_CLOUD_RUN_INGRESS" \
   --port=8080 \
   --platform=managed

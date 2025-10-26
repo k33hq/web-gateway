@@ -1,4 +1,4 @@
-FROM nginx:1.25.4-alpine
+FROM nginx:1.29.2-alpine
 
 EXPOSE 8080
 

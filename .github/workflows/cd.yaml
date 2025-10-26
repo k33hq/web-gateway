@@ -1,26 +1,43 @@
 name: Deploy to GCP
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "dev.k33.com"
+        type: environment
 env:
-  IMAGE: europe-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/web/k33-web-gateway/nginx:1.25.4-alpine
+  IMAGE: europe-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/web/k33-web-gateway/nginx:1.29.2-alpine
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     permissions:
       contents: "read"
       id-token: "write"
     steps:
       - name: Checkout the Repository
         uses: actions/checkout@v3
+      - name: Load secrets
+        uses: 1password/load-secrets-action@v1
+        with:
+          # Export loaded secrets as environment variables
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          # gcp
+          GCP_WORKLOAD_IDENTITY_PROVIDER: op://k33-platform-env/github/${{ vars.OP_GITHUB_GCP_ENV }}/GCP_WORKLOAD_IDENTITY_PROVIDER
+          GCP_SERVICE_ACCOUNT: op://k33-platform-env/github/${{ vars.OP_GITHUB_GCP_ENV }}/GCP_SERVICE_ACCOUNT
       - name: Google auth
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
       - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v3
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: ${{ vars.GCP_PROJECT_ID }}
       - name: Authorize Docker push
         run: gcloud auth configure-docker europe-docker.pkg.dev
       - name: Push image to gcp artifact registry
@@ -29,13 +46,15 @@ jobs:
           docker image push "$IMAGE"
       - name: Deploy to GCP Cloud Run
         env:
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          DEFAULT_HOSTNAME: ${{ secrets.DEFAULT_HOSTNAME }}
-          RESEARCH_HOSTNAME: ${{ secrets.RESEARCH_HOSTNAME }}
-          RESEARCH_ARCHIVE_HOSTNAME: ${{ secrets.RESEARCH_ARCHIVE_HOSTNAME }}
-          INVEST_HOSTNAME: ${{ secrets.INVEST_HOSTNAME }}
-          VAULT_HOSTNAME: ${{ secrets.VAULT_HOSTNAME }}
-          AUTH_HOSTNAME: ${{ secrets.AUTH_HOSTNAME }}
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          DEFAULT_HOSTNAME: ${{ vars.DEFAULT_HOSTNAME }}
+          RESEARCH_HOSTNAME: ${{ vars.RESEARCH_HOSTNAME }}
+          RESEARCH_ARCHIVE_HOSTNAME: ${{ vars.RESEARCH_ARCHIVE_HOSTNAME }}
+          INVEST_HOSTNAME: ${{ vars.INVEST_HOSTNAME }}
+          VAULT_HOSTNAME: ${{ vars.VAULT_HOSTNAME }}
+          AUTH_HOSTNAME: ${{ vars.AUTH_HOSTNAME }}
+          WEB_DOMAIN_NAME: ${{ vars.WEB_DOMAIN_NAME }}
+          GCP_CLOUD_RUN_INGRESS: ${{ vars.GCP_CLOUD_RUN_INGRESS }}
         run: |-
           gcloud run deploy k33-web-gateway \
             --region europe-west1 \
@@ -51,10 +70,10 @@ jobs:
             --set-env-vars=INVEST_HOSTNAME="$INVEST_HOSTNAME" \
             --set-env-vars=VAULT_HOSTNAME="$VAULT_HOSTNAME" \
             --set-env-vars=AUTH_HOSTNAME="$AUTH_HOSTNAME" \
-            --set-env-vars=WEB_DOMAIN_NAME=k33.com \
+            --set-env-vars=WEB_DOMAIN_NAME="$WEB_DOMAIN_NAME" \
             --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
             --service-account k33-web-gateway@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
             --allow-unauthenticated \
-            --ingress=internal-and-cloud-load-balancing \
+            --ingress="$GCP_CLOUD_RUN_INGRESS" \
             --port=8080 \
             --platform=managed
