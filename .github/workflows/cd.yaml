@@ -40,6 +40,10 @@ jobs:
           project_id: ${{ vars.GCP_PROJECT_ID }}
       - name: Authorize Docker push
         run: gcloud auth configure-docker europe-docker.pkg.dev
+      - name: Download Webflow export
+        run: |
+          gcloud storage cp gs://k33-dev-assets/k33-web.webflow.zip .
+          unzip k33-web.webflow.zip -d config/webflow/
       - name: Push image to gcp artifact registry
         run: |-
           docker image build -t "$IMAGE" config
