@@ -55,6 +55,7 @@ jobs:
           AUTH_HOSTNAME: ${{ vars.AUTH_HOSTNAME }}
           WEB_DOMAIN_NAME: ${{ vars.WEB_DOMAIN_NAME }}
           GCP_CLOUD_RUN_INGRESS: ${{ vars.GCP_CLOUD_RUN_INGRESS }}
+          PLATFORM_HOSTNAME: ${{ vars.PLATFORM_HOSTNAME }}
         run: |-
           gcloud run deploy k33-web-gateway \
             --region europe-west1 \
@@ -72,6 +73,7 @@ jobs:
             --set-env-vars=AUTH_HOSTNAME="$AUTH_HOSTNAME" \
             --set-env-vars=WEB_DOMAIN_NAME="$WEB_DOMAIN_NAME" \
             --set-env-vars=NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/ \
+            --set-env-vars=PLATFORM_HOSTNAME="$PLATFORM_HOSTNAME" \
             --service-account k33-web-gateway@"$GCP_PROJECT_ID".iam.gserviceaccount.com \
             --allow-unauthenticated \
             --ingress="$GCP_CLOUD_RUN_INGRESS" \
