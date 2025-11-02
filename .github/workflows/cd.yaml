@@ -42,7 +42,7 @@ jobs:
         run: gcloud auth configure-docker europe-docker.pkg.dev
       - name: Download Webflow export
         run: |
-          gcloud storage cp gs://k33-dev-assets/k33-web.webflow.zip .
+          gcloud storage cp gs://${{ vars.GCP_PROJECT_ID }}-assets/k33-web.webflow.zip .
           unzip k33-web.webflow.zip -d config/webflow/
       - name: Push image to gcp artifact registry
         run: |-
